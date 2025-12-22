@@ -1,4 +1,4 @@
-# Century AI 21
+# BR SCALE
 
 AI-powered real estate marketplace using multi-agent systems to automate 80-90% of the property sales process.
 
@@ -21,7 +21,7 @@ Open [http://localhost:3000](http://localhost:3000)
 ## 📁 Project Structure
 
 ```
-century-ai-21/
+br-scale/
 ├── src/
 │   ├── domain/              # Business entities & rules
 │   ├── application/         # Use cases & services
@@ -52,8 +52,8 @@ century-ai-21/
 - [x] Next.js initialization
 - [x] Clean Architecture structure
 - [x] Domain entities
-- [ ] Supabase setup
-- [ ] First migration
+- [x] Supabase setup
+- [x] First migration
 
 ## 📝 Scripts
 
@@ -72,4 +72,4 @@ See `.env.example` for required environment variables.
 
 ## 📄 License
 
-Private - Century AI 21
+Private - BR SCALE

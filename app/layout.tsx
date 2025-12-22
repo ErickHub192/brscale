@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Century AI 21",
-    description: "AI-powered real estate marketplace",
+    title: "BR SCALE",
+    description: "AI-powered real estate marketplace for brokers",
 };
 
 export default function RootLayout({
     children,
 }: Readonly<{
-    children: React.Node;
+    children: React.ReactNode;
 }>) {
     return (
         <html lang="en">
