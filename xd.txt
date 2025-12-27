@@ -1,0 +1,331 @@
+
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 173ms (compile: 13ms, render: 160ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'marketing',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 261ms (compile: 89ms, render: 172ms)
+[API] Resuming workflow for property: {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  updates: {
+    updates: {
+      humanResponse: 'continua agente marketing',
+      humanInterventionRequired: false
+    }
+  }
+}
+[AIAgentOrchestrator] Resuming workflow for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[Workflow] Resuming workflow for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[PostgresPool] PostgreSQL connection pool created
+[CheckpointSaver] PostgreSQL checkpoint saver initialized
+[CheckpointSaver] Tables: checkpoints, checkpoint_blobs, checkpoint_writes
+[Workflow] Current checkpoint state: {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  stage: 'marketing',
+  next: []
+}
+[Workflow] Executing Input Manager Agent
+[Input Manager] Starting property validation and enhancement
+[Input Manager] Analyzing property data completeness
+[Input Manager] Property analysis complete { completeness: 60, qualityScore: 70 }
+[Input Manager] Fetching market data for pricing validation
+[MarketDataTool] Fetching market data: {
+  propertyType: 'apartment',
+  location: { city: 'austin', state: 'TX', zipCode: '78701' },
+  bedrooms: 3,
+  bathrooms: 2.5
+}
+[Input Manager] Market data fetched { averagePrice: 4000000, marketTrend: 'hot' }
+[Input Manager] Interpreting human response with LLM {
+  humanResponse: 'continua agente marketing',
+  context: 'Property validation completed with quality score 70/100 (threshold: 85). Suggestions: Add more images (current: 3, recommended: 10+), Add a video tour to increase engagement',
+  options: [ 'PROCEED', 'STAY' ]
+}
+Zod field at `#/definitions/analyze_property/properties/propertyData/properties/videos` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/fetch_market_data/properties/location/properties/zipCode` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/fetch_market_data/properties/bedrooms` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/fetch_market_data/properties/bathrooms` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/fetch_market_data/properties/squareFeet` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/fetch_market_data/properties/priceRange` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'marketing',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 282ms (compile: 33ms, render: 249ms)
+[Input Manager] LLM interpreted human response { decision: 'PROCEED' }
+[Input Manager] Input validation complete { readyForMarketing: true, qualityScore: 70 }
+[Workflow] Executing Marketing Agent
+[Marketing Agent] Starting authentic marketing content generation
+[Marketing Agent] Voice selected for this property {
+  voice: 'professional',
+  tone: 'Authoritative, trustworthy, sophisticated'
+}
+[Marketing Agent] Generating Facebook post with voice: professional
+Zod field at `#/definitions/send_email/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/attachments` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+[Marketing Agent] Generating Instagram post
+Zod field at `#/definitions/send_email/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/attachments` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'marketing',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 171ms (compile: 18ms, render: 153ms)
+[Marketing Agent] Generating LinkedIn post
+Zod field at `#/definitions/send_email/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/attachments` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[Marketing Agent] Generating Twitter post
+Zod field at `#/definitions/send_email/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/attachments` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'marketing',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 247ms (compile: 56ms, render: 191ms)
+[Marketing Agent] Marketing content generation complete {
+  primaryVoice: 'professional',
+  socialPosts: 4,
+  analytics: {
+    totalPosts: 1,
+    voiceDistribution: {
+      storytelling: 0,
+      casual: 0,
+      professional: 1,
+      community: 0,
+      behind_scenes: 0
+    },
+    lastUsed: 'professional'
+  }
+}
+[Workflow] Executing Lead Manager Agent
+[Lead Manager] Starting lead qualification and management
+[Lead Manager] Interpreting human response with LLM {
+  humanResponse: 'continua agente marketing',
+  context: 'Lead management in progress. Waiting for qualified leads to submit offers before proceeding to negotiation.',
+  options: [ 'PROCEED', 'WAIT' ]
+}
+Zod field at `#/definitions/qualify_lead/properties/leadData/properties/phone` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/qualify_lead/properties/leadData/properties/message` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/qualify_lead/properties/leadData/properties/budget` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/qualify_lead/properties/leadData/properties/timeline` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/qualify_lead/properties/leadData/properties/preApproved` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/schedule_property_visit/properties/duration` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/check_calendar_availability/properties/timeMin` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/check_calendar_availability/properties/timeMax` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_whatsapp_message/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/propertyId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_email/properties/attachments` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_sms/properties/leadId` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_followup_sequence/properties/leadContact/properties/email` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+Zod field at `#/definitions/send_followup_sequence/properties/leadContact/properties/phone` uses `.optional()` without `.nullable()` which is not supported by the API. See: https://platform.openai.com/docs/guides/structured-outputs?api-mode=responses#all-fields-must-be-required
+This will become an error in a future version of the SDK.
+[Lead Manager] LLM interpreted human response { decision: 'PROCEED' }
+[Lead Manager] Human decision on leads { decision: 'PROCEED' }
+[Workflow] Workflow resumed and executed {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  finalStage: 'negotiation'
+}
+[AIAgentOrchestrator] Workflow resumed successfully {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  finalStage: 'negotiation'
+}
+[API] Workflow resumed successfully {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  humanInterventionRequired: false
+}
+ POST /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow/resume 200 in 16.3s (compile: 1053ms, render: 15.2s)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 261ms (compile: 20ms, render: 241ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 278ms (compile: 26ms, render: 253ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 265ms (compile: 32ms, render: 233ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 255ms (compile: 20ms, render: 235ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 240ms (compile: 13ms, render: 227ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 301ms (compile: 48ms, render: 252ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 409ms (compile: 147ms, render: 262ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 348ms (compile: 70ms, render: 277ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 340ms (compile: 43ms, render: 297ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 390ms (compile: 141ms, render: 249ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 280ms (compile: 27ms, render: 253ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 246ms (compile: 13ms, render: 233ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 281ms (compile: 30ms, render: 251ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 250ms (compile: 16ms, render: 234ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false
+}
+ GET /api/properties/53a3c13f-bebd-42e1-af5d-935b782019d8/workflow 200 in 269ms (compile: 40ms, render: 229ms)
+[API] Getting workflow status for property: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[AIAgentOrchestrator] Getting workflow status for: 53a3c13f-bebd-42e1-af5d-935b782019d8
+[API] Workflow status retrieved {
+  propertyId: '53a3c13f-bebd-42e1-af5d-935b782019d8',
+  currentStage: 'negotiation',
+  completed: false

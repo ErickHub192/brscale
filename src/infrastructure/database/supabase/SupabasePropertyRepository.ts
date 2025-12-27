@@ -3,7 +3,7 @@
 
 import { IPropertyRepository } from '@/domain/repositories';
 import { Property, PropertyData, PropertyStatus, PropertyType } from '@/domain/entities';
-import { supabase, Database } from './client';
+import { supabaseAdmin as supabase, Database } from './client';
 
 type PropertyRow = Database['public']['Tables']['properties']['Row'];
 type PropertyInsert = Database['public']['Tables']['properties']['Insert'];
@@ -37,7 +37,7 @@ export class SupabasePropertyRepository implements IPropertyRepository {
         const { data, error } = await supabase
             .from('properties')
             .select('*')
-            .eq('status', PropertyStatus.ACTIVE)
+            // No filter by status - service role can see all
             .order('created_at', { ascending: false });
 
         if (error || !data) return [];
@@ -92,7 +92,7 @@ export class SupabasePropertyRepository implements IPropertyRepository {
     // Helper method to map Domain (CamelCase) to Database (snake_case)
     private mapToRow(data: Partial<PropertyData>): Partial<PropertyInsert> {
         const row: any = {};
-        const mapping: Record<string, keyof PropertyInsert> = {
+        const mapping: Record<string, string> = {
             userId: 'user_id',
             title: 'title',
             description: 'description',
@@ -107,10 +107,17 @@ export class SupabasePropertyRepository implements IPropertyRepository {
             videos: 'videos',
             aiEnhancedDescription: 'ai_enhanced_description',
             aiSuggestedPrice: 'ai_suggested_price',
-            metadata: 'metadata'
+            metadata: 'metadata',
+            createdAt: 'created_at',
+            updatedAt: 'updated_at'
         };
 
         Object.keys(data).forEach(key => {
+            // Skip timestamps on insert/update (database handles them)
+            if (key === 'createdAt' || key === 'updatedAt') {
+                return;
+            }
+
             const dbKey = mapping[key] || key;
             const value = data[key as keyof PropertyData];
 

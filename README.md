@@ -41,6 +41,7 @@ br-scale/
 
 ## 📚 Documentation
 
+- [Product Vision](./docs/VISION.md) ⚡️
 - [Architecture](./ARCHITECTURE.md)
 - [Best Practices](./BEST_PRACTICES.md)
 - [Migrations Strategy](./MIGRATIONS_STRATEGY.md)

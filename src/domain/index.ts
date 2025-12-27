@@ -3,5 +3,6 @@
 // NO dependencies on external frameworks or libraries
 
 export * from './entities';
-export * from './value-objects';
+// TODO: Create value objects (Address, Money, PriceRange, ContactInfo)
+// export * from './value-objects';
 export * from './repositories';

@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "google-calendar": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@am2rican5/mcp-google-calendar"],
+      "env": {
+        "GOOGLE_CALENDAR_CREDENTIALS": ""
+      }
+    },
+    "twilio-whatsapp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@ubos/twilio-whatsapp-mcp"],
+      "env": {
+        "TWILIO_ACCOUNT_SID": "",
+        "TWILIO_AUTH_TOKEN": "",
+        "TWILIO_WHATSAPP_NUMBER": ""
+      }
+    },
+    "pdf-generator": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "pdf-mcp-server"],
+      "env": {}
+    }
+  }
+}

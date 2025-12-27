@@ -1,6 +1,8 @@
-# Century AI 21 - Technical Implementation Plan
+# BR SCALE - Technical Implementation Plan
 
-Complete technical architecture for an AI-powered real estate marketplace using multi-agent systems to automate 80-90% of the property sales process.
+Complete technical architecture for an AI-powered real estate marketplace for brokers, focused on **execution** and automated process management.
+
+See [VISION.md](./docs/VISION.md) for our core philosophy.
 
 ## User Review Required
 

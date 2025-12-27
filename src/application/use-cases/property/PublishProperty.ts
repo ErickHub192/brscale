@@ -1,68 +1,107 @@
-// Use Case: Publish Property
-// Triggers the AI workflow to process and publish the property
+/**
+ * Use Case: Publish Property
+ * Publishes property and triggers the AI multi-agent workflow
+ */
 
 import { IPropertyRepository } from '@/domain/repositories';
 import { Property } from '@/domain/entities';
+import { AIAgentOrchestratorService } from '@/application/services/AIAgentOrchestrator';
 
 export interface PublishPropertyInput {
-    propertyId: string;
-    userId: string;
+  propertyId: string;
+  userId: string;
 }
 
 export interface PublishPropertyOutput {
-    property: Property;
-    success: boolean;
-    message: string;
-    workflowStarted: boolean;
+  property: Property;
+  success: boolean;
+  message: string;
+  workflowStarted: boolean;
+  workflowStatus?: {
+    currentStage: string;
+    humanInterventionRequired: boolean;
+  };
 }
 
 export class PublishPropertyUseCase {
-    constructor(private propertyRepository: IPropertyRepository) { }
+  private orchestrator: AIAgentOrchestratorService;
 
-    async execute(input: PublishPropertyInput): Promise<PublishPropertyOutput> {
-        try {
-            // Get property
-            const property = await this.propertyRepository.findById(input.propertyId);
+  constructor(private propertyRepository: IPropertyRepository) {
+    this.orchestrator = new AIAgentOrchestratorService();
+  }
 
-            if (!property) {
-                throw new Error('Property not found');
-            }
+  async execute(input: PublishPropertyInput): Promise<PublishPropertyOutput> {
+    try {
+      // Get property
+      const property = await this.propertyRepository.findById(input.propertyId);
 
-            // Verify ownership
-            if (property.toJSON().userId !== input.userId) {
-                throw new Error('Unauthorized: You do not own this property');
-            }
+      if (!property) {
+        throw new Error('Property not found');
+      }
 
-            // Check if can be published
-            if (!property.canBePublished()) {
-                throw new Error('Property cannot be published: missing required fields');
-            }
+      // Verify ownership
+      if (property.toJSON().userId !== input.userId) {
+        throw new Error('Unauthorized: You do not own this property');
+      }
 
-            // Publish property (changes status to ACTIVE)
-            property.publish();
+      // Check if can be published
+      if (!property.canBePublished()) {
+        throw new Error('Property cannot be published: missing required fields');
+      }
 
-            // Update in repository
-            const updatedProperty = await this.propertyRepository.update(
-                input.propertyId,
-                property.toJSON()
-            );
+      // Publish property (changes status to ACTIVE)
+      property.publish();
 
-            // TODO: Trigger AI workflow here
-            // await this.aiWorkflowService.startPropertyWorkflow(property.id);
+      // Update in repository
+      const updatedProperty = await this.propertyRepository.update(
+        input.propertyId,
+        property.toJSON()
+      );
 
-            return {
-                property: updatedProperty,
-                success: true,
-                message: 'Property published successfully',
-                workflowStarted: true,
-            };
-        } catch (error) {
-            return {
-                property: null as any,
-                success: false,
-                message: error instanceof Error ? error.message : 'Failed to publish property',
-                workflowStarted: false,
-            };
-        }
+      // ✨ Trigger AI multi-agent workflow
+      console.log('[PublishProperty] Starting AI workflow for property:', input.propertyId);
+
+      let workflowStarted = false;
+      let workflowStatus;
+
+      try {
+        const status = await this.orchestrator.startPropertyWorkflow(updatedProperty);
+
+        workflowStarted = true;
+        workflowStatus = {
+          currentStage: status.currentStage,
+          humanInterventionRequired: status.humanInterventionRequired || false,
+        };
+
+        console.log('[PublishProperty] AI workflow started successfully', {
+          propertyId: input.propertyId,
+          currentStage: status.currentStage,
+          humanInterventionRequired: status.humanInterventionRequired,
+        });
+      } catch (workflowError) {
+        console.error('[PublishProperty] AI workflow failed to start:', workflowError);
+        // Don't fail the entire publish if workflow fails
+        // Property is still published, workflow can be retried later
+        workflowStarted = false;
+      }
+
+      return {
+        property: updatedProperty,
+        success: true,
+        message: workflowStarted
+          ? 'Property published and AI workflow started successfully'
+          : 'Property published (AI workflow will be retried)',
+        workflowStarted,
+        workflowStatus,
+      };
+    } catch (error) {
+      return {
+        property: null as any,
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to publish property',
+        workflowStarted: false,
+      };
     }
+  }
 }
+

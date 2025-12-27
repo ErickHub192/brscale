@@ -1,8 +1,10 @@
 // Use Case: Create Property
 // Single Responsibility: Handle property creation with validation
+// Auto-publishes property and starts AI workflow
 
 import { IPropertyRepository } from '@/domain/repositories';
 import { Property, PropertyData, PropertyStatus, PropertyType } from '@/domain/entities';
+import { AIAgentOrchestratorService } from '@/application/services/AIAgentOrchestrator';
 
 export interface CreatePropertyInput {
     userId: string;
@@ -28,6 +30,7 @@ export interface CreatePropertyOutput {
     property: Property;
     success: boolean;
     message: string;
+    workflowStarted?: boolean;
 }
 
 export class CreatePropertyUseCase {
@@ -38,7 +41,7 @@ export class CreatePropertyUseCase {
             // Validate input
             this.validateInput(input);
 
-            // Create property data
+            // Create property data with ACTIVE status (auto-publish)
             const propertyData: Omit<PropertyData, 'id' | 'createdAt' | 'updatedAt'> = {
                 userId: input.userId,
                 title: input.title,
@@ -49,7 +52,7 @@ export class CreatePropertyUseCase {
                 bathrooms: input.bathrooms ?? null,
                 squareFeet: input.squareFeet ?? null,
                 propertyType: input.propertyType,
-                status: PropertyStatus.DRAFT,
+                status: PropertyStatus.ACTIVE, // Auto-publish
                 images: input.images,
                 videos: input.videos ?? [],
                 aiEnhancedDescription: null,
@@ -60,10 +63,26 @@ export class CreatePropertyUseCase {
             // Create property via repository
             const property = await this.propertyRepository.create(propertyData);
 
+            // Auto-start AI workflow
+            const orchestrator = new AIAgentOrchestratorService();
+
+            let workflowStarted = false;
+            try {
+                await orchestrator.startPropertyWorkflow(property);
+                workflowStarted = true;
+                console.log('[CreateProperty] AI workflow started for property:', property.toJSON().id);
+            } catch (workflowError) {
+                console.error('[CreateProperty] Failed to start workflow:', workflowError);
+                // Don't fail property creation if workflow fails
+            }
+
             return {
                 property,
                 success: true,
-                message: 'Property created successfully',
+                message: workflowStarted
+                    ? 'Property created and AI workflow started successfully'
+                    : 'Property created successfully (workflow start failed)',
+                workflowStarted,
             };
         } catch (error) {
             return {
