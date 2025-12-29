@@ -32,10 +32,6 @@ export function createAgentModel(config: {
     temperature: config.temperature,
     maxTokens: config.maxTokens,
     openAIApiKey: env.OPENAI_API_KEY,
-    modelKwargs: {
-      // Enable function calling
-      parallel_tool_calls: true,
-    },
   });
 }
 
@@ -172,7 +168,7 @@ Respond with ONLY the exact option text (e.g., "${options[0]}") and nothing else
     const validTools = this.config.tools.filter(tool => tool != null);
     const modelWithTools = validTools.length > 0
       ? this.model.bindTools(validTools)
-      : this.model.bind({ parallel_tool_calls: false });
+      : this.model;
 
     const llmResponse = await modelWithTools.invoke([
       { role: 'system', content: this.config.systemPrompt },
@@ -233,7 +229,7 @@ Respond with a JSON object:
 
     const modelWithTools = validTools.length > 0
       ? this.model.bindTools(validTools)
-      : this.model.bind({ parallel_tool_calls: false });
+      : this.model;
 
     const llmResponse = await modelWithTools.invoke([
       { role: 'system', content: 'You are a precise instruction extractor. Always respond with valid JSON.' },

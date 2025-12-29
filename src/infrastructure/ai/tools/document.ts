@@ -43,7 +43,7 @@ export const GenerateContractTool = new DynamicStructuredTool({
     });
 
     // Generate real PDF using PDFGeneratorService
-    const userId = 'system'; // TODO: Get actual userId from context
+    const userId = '3fa8837a-76f4-45ee-8876-dad3f3da3c6b'; // TODO: Get from session context
     const result = await pdfGeneratorService.generateContract(
       propertyId,
       propertyData,
@@ -115,7 +115,7 @@ export const GenerateDisclosureTool = new DynamicStructuredTool({
     });
 
     // Generate real PDF using PDFGeneratorService
-    const userId = 'system'; // TODO: Get actual userId from context
+    const userId = '3fa8837a-76f4-45ee-8876-dad3f3da3c6b'; // TODO: Get from session context
     const result = await pdfGeneratorService.generateDisclosure(
       propertyId,
       propertyData,
@@ -181,7 +181,7 @@ export const GenerateInspectionChecklistTool = new DynamicStructuredTool({
     });
 
     // Generate real PDF using PDFGeneratorService
-    const userId = 'system'; // TODO: Get actual userId from context
+    const userId = '3fa8837a-76f4-45ee-8876-dad3f3da3c6b'; // TODO: Get from session context
     const areas = includeAreas || [
       'foundation',
       'roof',
@@ -244,7 +244,7 @@ export const GenerateClosingChecklistTool = new DynamicStructuredTool({
     });
 
     // Generate real PDF using PDFGeneratorService
-    const userId = 'system'; // TODO: Get actual userId from context
+    const userId = '3fa8837a-76f4-45ee-8876-dad3f3da3c6b'; // TODO: Get from session context
     const result = await pdfGeneratorService.generateClosingChecklist(
       propertyId,
       transactionData,

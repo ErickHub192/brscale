@@ -637,7 +637,7 @@ Please type your decision:
       askingPrice: property.price,
       conditions: offer.conditions,
       earnestMoney: offer.amount * 0.01, // Assume 1% earnest money
-      closingDate: offer.expiresAt.toISOString(),
+      closingDate: typeof offer.expiresAt === 'string' ? offer.expiresAt : offer.expiresAt.toISOString(),
       marketData: {
         averagePrice: marketData.averagePrice,
         daysOnMarket: 35, // TODO: Track actual days on market
@@ -847,7 +847,7 @@ BR SCALE Real Estate Team`;
       response: z.string().describe(
         'Your response to the broker. If DISCUSS, answer their question. If APPROVE/REJECT/MODIFY, acknowledge their decision.'
       ),
-      reasoning: z.string().optional().describe('Brief explanation of your interpretation'),
+      reasoning: z.union([z.string(), z.null()]).describe('Brief explanation of your interpretation'),
     });
 
     const llmWithStructuredOutput = this.model.withStructuredOutput(ResponseSchema);

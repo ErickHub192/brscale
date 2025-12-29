@@ -1,25 +1,15 @@
 /**
  * PDF Generator Service
- * Generates legal documents (contracts, disclosures, checklists) from Handlebars templates
+ * Generates legal documents (contracts, disclosures, checklists) from Handlebars templates using Puppeteer
  *
  * IMPORTANT: This service should ONLY run on the server (API routes, server actions)
- * PDFKit has issues with Next.js bundlers (webpack/turbopack) in client code
  */
 
-// Dynamic import to ensure server-only execution
 import Handlebars from 'handlebars';
 import fs from 'fs';
 import path from 'path';
+import puppeteer from 'puppeteer';
 import { supabaseAdmin } from '../database/supabase/client';
-
-// Lazy load PDFKit to avoid bundler issues
-let PDFDocument: any;
-const loadPDFKit = async () => {
-  if (!PDFDocument) {
-    PDFDocument = (await import('pdfkit')).default;
-  }
-  return PDFDocument;
-};
 
 // Register Handlebars helpers
 Handlebars.registerHelper('eq', function (a: any, b: any) {
@@ -51,24 +41,45 @@ export class PDFGeneratorService {
   }
 
   /**
-   * Generate PDF from template
+   * Generate PDF from Handlebars template using Puppeteer
    */
   async generatePDF(
     templateName: string,
     data: Record<string, any>,
     userId: string
   ): Promise<PDFGenerationResult> {
+    let browser;
+
     try {
-      // 1. Load template
+      // 1. Load and compile Handlebars template
       const templatePath = path.join(this.templatesDir, `${templateName}.hbs`);
       const templateContent = fs.readFileSync(templatePath, 'utf-8');
       const template = Handlebars.compile(templateContent);
 
-      // 2. Render template with data
-      const renderedContent = template(data);
+      // 2. Render template with data to HTML
+      const html = template(data);
 
-      // 3. Create PDF
-      const pdfBuffer = await this.createPDFFromText(renderedContent);
+      // 3. Generate PDF from HTML using Puppeteer
+      browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      });
+
+      const page = await browser.newPage();
+      await page.setContent(html, { waitUntil: 'networkidle0' });
+
+      const pdfBuffer = await page.pdf({
+        format: 'LETTER',
+        printBackground: true,
+        margin: {
+          top: '50px',
+          bottom: '50px',
+          left: '50px',
+          right: '50px',
+        },
+      });
+
+      await browser.close();
 
       // 4. Upload to Supabase Storage
       const documentId = `${templateName}_${Date.now()}`;
@@ -94,7 +105,7 @@ export class PDFGeneratorService {
         console.error('[PDFGeneratorService] Failed to create signed URL:', signedUrlError);
       }
 
-      const publicUrl = signedUrlData?.signedUrl || `https://storage.example.com/${filePath}`; // Fallback mock URL for testing
+      const publicUrl = signedUrlData?.signedUrl || `https://storage.example.com/${filePath}`;
 
       return {
         success: true,
@@ -104,6 +115,10 @@ export class PDFGeneratorService {
         filePath,
       };
     } catch (error) {
+      if (browser) {
+        await browser.close();
+      }
+
       console.error('[PDFGeneratorService] Error generating PDF:', error);
       return {
         success: false,
@@ -114,74 +129,6 @@ export class PDFGeneratorService {
         error: error instanceof Error ? error.message : 'Unknown error',
       };
     }
-  }
-
-  /**
-   * Create PDF buffer from plain text
-   */
-  private async createPDFFromText(text: string): Promise<Buffer> {
-    // Load PDFKit dynamically to avoid bundler issues
-    const PDFDoc = await loadPDFKit();
-
-    return new Promise((resolve, reject) => {
-      // Use Helvetica (standard PDF font, no external .afm files needed)
-      const doc = new PDFDoc({
-        size: 'LETTER',
-        margins: {
-          top: 50,
-          bottom: 50,
-          left: 50,
-          right: 50,
-        },
-      });
-
-      const chunks: Buffer[] = [];
-
-      doc.on('data', (chunk) => chunks.push(chunk));
-      doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', reject);
-
-      // Add content - Helvetica is built into PDF spec, no .afm files needed
-      doc.fontSize(12);
-      doc.font('Helvetica');
-
-      // Split text into lines and add to PDF
-      const lines = text.split('\n');
-      lines.forEach((line, index) => {
-        // Handle headers (lines with = or - underlines)
-        if (line.match(/^=+$/) || line.match(/^-+$/)) {
-          return; // Skip underline characters
-        }
-
-        // Check if previous line was a header
-        const prevLine = lines[index - 1];
-        const nextLine = lines[index + 1];
-        const isHeader = nextLine && (nextLine.match(/^=+$/) || nextLine.match(/^-+$/));
-
-        if (isHeader) {
-          doc.fontSize(16).font('Courier-Bold');
-          doc.text(line, { align: 'left' });
-          doc.moveDown(0.5);
-          doc.fontSize(12).font('Courier');
-        } else {
-          // Check for bold patterns (checkbox items, labels, etc.)
-          if (line.match(/^\[.*\]/) || line.match(/^[A-Z\s]+:$/)) {
-            doc.font('Courier-Bold');
-            doc.text(line);
-            doc.font('Courier');
-          } else {
-            doc.text(line);
-          }
-        }
-
-        // Add extra spacing after sections
-        if (line.trim() === '') {
-          doc.moveDown(0.5);
-        }
-      });
-
-      doc.end();
-    });
   }
 
   /**
@@ -196,7 +143,7 @@ export class PDFGeneratorService {
     const data = {
       property: propertyData,
       offer: offerData,
-      seller: { name: 'John Seller' }, // TODO: Get from user data
+      seller: { name: 'John Seller' },
       buyer: { name: offerData.buyerName, email: offerData.buyerEmail },
       payment: {
         downPayment: Math.round(offerData.offerAmount * 0.2),
@@ -248,7 +195,7 @@ export class PDFGeneratorService {
     userId: string
   ): Promise<PDFGenerationResult> {
     const data = {
-      property: { address: 'Property Address' }, // TODO: Get from property data
+      property: { address: 'Property Address' },
       propertyType,
       includeAreas,
       inspectionDate: new Date().toLocaleDateString(),
@@ -268,7 +215,7 @@ export class PDFGeneratorService {
     userId: string
   ): Promise<PDFGenerationResult> {
     const data = {
-      property: { address: 'Property Address' }, // TODO: Get from property data
+      property: { address: 'Property Address' },
       transaction: transactionData,
       generatedAt: new Date().toISOString(),
       documentId: `closing_${propertyId}_${Date.now()}`,

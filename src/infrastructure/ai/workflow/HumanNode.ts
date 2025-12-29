@@ -17,10 +17,11 @@ export async function humanNode(
 ): Promise<Command> {
   console.log('[HumanNode] Waiting for user input');
 
-  // Get the last active agent from metadata
-  const langgraphTriggers = config?.configurable?.langgraph_triggers || [];
-  let activeAgent = 'negotiation'; // Default to negotiation if no trigger found
+  // Get the last active agent from state.stage (most reliable)
+  // Fallback to langgraph triggers if needed
+  let activeAgent = state.stage || 'negotiation';
 
+  const langgraphTriggers = config?.configurable?.langgraph_triggers || [];
   if (langgraphTriggers.length > 0) {
     // Extract agent name from trigger (format: "branch:agent_name:path")
     const triggerParts = langgraphTriggers[0].split(':');

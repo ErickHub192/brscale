@@ -421,7 +421,7 @@ Please type your decision:
       response: z.string().describe(
         'Your response to the broker. If DISCUSS, answer their question. If APPROVE/REVISE, acknowledge their decision.'
       ),
-      reasoning: z.string().optional().describe('Brief explanation of your interpretation'),
+      reasoning: z.union([z.string(), z.null()]).describe('Brief explanation of your interpretation'),
     });
 
     const llmWithStructuredOutput = this.model.withStructuredOutput(ResponseSchema);
